@@ -1,0 +1,27 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="referrer" content="no-referrer"><title>Google sign-in — Job Search Factory</title>
+<style>body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;max-width:680px;margin:40px auto;padding:0 16px;line-height:1.6;color:#1a1a1a}h1{color:#0B2545}textarea{width:100%;font-family:ui-monospace,Menlo,monospace;font-size:15px;padding:10px;box-sizing:border-box}button{font-size:17px;padding:10px 18px;border-radius:8px;border:0;background:#0B2545;color:#fff}footer{margin-top:40px;font-size:14px;color:#555}</style></head><body>
+<h1>Google sign-in</h1>
+<div id="ok" hidden>
+<p>Sign-in approved. Copy the code below and paste it into the Job Search Factory session. It works once and expires within minutes.</p>
+<textarea id="code" rows="3" readonly></textarea>
+<p><button id="copy" type="button">Copy code</button></p>
+</div>
+<div id="err" hidden><p id="errmsg"></p><p>Go back to the session and start the sign-in again.</p></div>
+<div id="idle" hidden><p>This page shows the sign-in code after you approve access. Start the sign-in from the Job Search Factory session.</p></div>
+<script>
+(function () {
+  var p = new URLSearchParams(location.search);
+  var code = p.get('code'), error = p.get('error');
+  history.replaceState(null, '', location.pathname); // keep the code out of browser history
+  if (code) { document.getElementById('code').value = code; document.getElementById('ok').hidden = false; }
+  else if (error) { document.getElementById('errmsg').textContent = 'Google returned an error: ' + error; document.getElementById('err').hidden = false; }
+  else { document.getElementById('idle').hidden = false; }
+  document.getElementById('copy').onclick = function () {
+    var t = document.getElementById('code'); t.select();
+    if (navigator.clipboard) navigator.clipboard.writeText(t.value); else document.execCommand('copy');
+    this.textContent = 'Copied';
+  };
+}());
+</script>
+<footer><a href="index.html">Home</a> · <a href="privacy.html">Privacy policy</a> · <a href="terms.html">Terms of service</a></footer>
+</body></html>
